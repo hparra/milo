@@ -22,6 +22,8 @@ function addBroadcastEventField(videoObj, blockKey, blockValue) {
       break;
     case 'start-date':
     case 'end-date':
+      // TODO: check if blockVal is ISO DateTime or Excel abomination
+      // https://adobe-mwp.slack.com/archives/C9KD0TT6G/p1676057337442659
       videoObj.publication[i][camelize(key)] = blockValue;
       break;
     default:
@@ -69,18 +71,32 @@ function addSeekToActionField(videoObj, blockKey, blockValue) {
 export function createVideoObject(blockMap) {
   const video = {};
   Object.entries(blockMap).forEach(([key, val]) => {
-    const blockVal = val.content && val.content.textContent.trim();
+    const blockVal = (() => {
+      // TODO: This needs to be normalized elsewhere
+      if (val.content) {
+        return val.content && val.content.textContent.trim();
+      }
+      return val.trim();
+    })();
     if (!blockVal) return;
-    const blockKey = key && key.replaceAll(' ', '-');
+    const blockKey = key && key.toLowerCase().replaceAll(' ', '-');
     switch (true) {
       case blockKey === 'content-url':
       case blockKey === 'description':
-      case blockKey === 'duration':
       case blockKey === 'embed-url':
-      case blockKey === 'expires':
       case blockKey === 'name':
       case blockKey === 'regions-allowed':
+        video[camelize(blockKey)] = blockVal;
+        break;
+      case blockKey === 'duration':
+        // TODO: check if blockVal is ISO Duration or Excel abomination
+        // https://adobe-mwp.slack.com/archives/C9KD0TT6G/p1676057337442659
+        video[camelize(blockKey)] = blockVal;
+        break;
+      case blockKey === 'expires':
       case blockKey === 'upload-date':
+        // TODO: check if blockVal is ISO Date or Excel abomination
+        // https://adobe-mwp.slack.com/archives/C9KD0TT6G/p1676057337442659
         video[camelize(blockKey)] = blockVal;
         break;
       case blockKey === 'thumbnail-url':
