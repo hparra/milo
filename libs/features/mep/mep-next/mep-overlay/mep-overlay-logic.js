@@ -558,7 +558,9 @@ export async function setPreviewButton() {
     : simulateHref.searchParams.delete(key));
 
   if (getCheckboxParam(popup, 'toggle-manifest-parameters')) {
-    simulateHref.searchParams.delete('mep');
+    // Keep a bare `mep=` so the MEP button still renders in prod (utils checks
+    // `mepParam === ''`); an empty value applies no manifest parameters.
+    simulateHref.searchParams.set('mep', '');
   } else {
     simulateHref.searchParams.set('mep', manifestParameter.join('---'));
   }

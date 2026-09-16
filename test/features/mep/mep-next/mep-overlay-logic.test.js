@@ -948,7 +948,12 @@ describe('setPreviewButton', () => {
     expect(href).to.not.include('mepButton');
   });
 
-  it('excludes the mep param from href when toggle-manifest-parameters is checked', async () => {
+  it('keeps a bare, empty mep param in href when toggle-manifest-parameters is checked', async () => {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'mep-load-manifest';
+    input.value = 'my-manifest';
+    drawer.append(input);
     const cb = document.createElement('input');
     cb.type = 'checkbox';
     cb.id = 'toggle-manifest-parameters';
@@ -956,7 +961,10 @@ describe('setPreviewButton', () => {
     drawer.append(cb);
     await setPreviewButton();
     const href = drawer.querySelector('.mep-footer a.con-button').getAttribute('href');
-    expect(href).to.not.include('mep=');
+    // The bare `mep=` param must survive (prod shows the MEP button on `mepParam === ''`)...
+    expect(href).to.match(/[?&]mep=(&|$)/);
+    // ...but no manifest parameters should be applied.
+    expect(href).to.not.include('my-manifest');
   });
 
   it('includes the mep param in href when toggle-manifest-parameters is unchecked', async () => {
