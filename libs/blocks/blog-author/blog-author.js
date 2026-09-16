@@ -30,22 +30,9 @@ function decorateSocial(row) {
   loadIcons(row.querySelectorAll('span.icon'));
 }
 
-function normalizeWhitespace(row) {
-  const walker = document.createTreeWalker(row, NodeFilter.SHOW_TEXT);
-  const textNodes = [];
-  let node = walker.nextNode();
-  while (node) { textNodes.push(node); node = walker.nextNode(); }
-  textNodes.forEach((textNode, i) => {
-    let value = textNode.textContent.replace(/\s+/g, ' ');
-    if (i === 0) value = value.trimStart();
-    if (i === textNodes.length - 1) value = value.trimEnd();
-    textNode.textContent = value;
-  });
-}
-
 function injectSchema(el, company) {
-  const name = el.querySelector('.blog-author-name')?.textContent;
-  if (!name) return;
+const name = el.querySelector('.blog-author-name')?.innerText;
+if (!name) return;
 
   const schema = {
     '@context': 'https://schema.org',
