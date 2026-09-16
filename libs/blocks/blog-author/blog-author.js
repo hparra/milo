@@ -110,7 +110,6 @@ export default async function init(el) {
       return;
     }
 
-    normalizeWhitespace(row);
     row.className = TEXT_CLASSES[Math.min(textIdx, 2)];
     textIdx += 1;
   }
