@@ -31,7 +31,7 @@ function decorateSocial(row) {
 }
 
 function injectSchema(el, company) {
-const name = el.querySelector('.blog-author-name')?.innerText;
+  const name = el.querySelector('.blog-author-name')?.innerText;
 if (!name) return;
 
   const schema = {
