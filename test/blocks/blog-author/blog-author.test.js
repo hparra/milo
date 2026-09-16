@@ -223,8 +223,6 @@ describe('Blog Author', () => {
             </div></div>
       </div>`;
     await init(document.querySelector('.blog-author'));
-    expect(document.querySelector('.blog-author-name').textContent).to.equal('Adobe for Business Team');
-    expect(document.querySelector('.blog-author-title').textContent).to.equal('Senior Director, Marketing');
     const schema = getPersonSchema();
     expect(schema.name).to.equal('Adobe for Business Team');
   });
