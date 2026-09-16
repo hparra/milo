@@ -32,7 +32,7 @@ function decorateSocial(row) {
 
 function injectSchema(el, company) {
   const name = el.querySelector('.blog-author-name')?.innerText;
-if (!name) return;
+  if (!name) return;
 
   const schema = {
     '@context': 'https://schema.org',
